@@ -6,14 +6,14 @@ from householder import house
 
 # Make test cases for test_house
 @pytest.mark.parametrize(
-    "x, expected",
+    "x",
     [
-        (np.random.normal(loc=0.0, scale=5.0, size=np.random.randint(2,10)), True),  
-        (np.random.normal(loc=0.0, scale=5.0, size=np.random.randint(2,10)), True),  
-        (np.random.normal(loc=0.0, scale=5.0, size=np.random.randint(2,10)), True)
+        (np.random.normal(loc=0.0, scale=5.0, size=np.random.randint(2,10))),  
+        (np.random.normal(loc=0.0, scale=5.0, size=np.random.randint(2,10))),  
+        (np.random.normal(loc=0.0, scale=5.0, size=np.random.randint(2,10)))
     ]
 )
-def test_house(x, expected):
+def test_house(x):
     """Tests house() in householder.py"""
     
     # Call house()
@@ -28,4 +28,4 @@ def test_house(x, expected):
     e1 = Im[:,0]
 
     # Evaluation
-    assert np.allclose(np.matmul(P,x), np.linalg.norm(x)*e1, rtol=np.finfo(float).eps) == expected
+    assert np.allclose(np.matmul(P,x), np.linalg.norm(x)*e1, rtol=np.finfo(float).eps) == True

@@ -6,9 +6,18 @@ def house(x):
     Algorithm 5.1.1 in Golub and Van Loan, Matrix Comptutations.
     Given x is an element of R^m, this function computes v, an element of R^m,
     with v[0] (zero-based indexing) and beta, a real number, such that 
-    P = I - beta*v*v^T is orthogonal and P*x = || x ||_2 *e_1"""
+    P = I - beta*v*v^T is orthogonal and P*x = || x ||_2 *e_1.
+    This algorithm takes about 3*m flops, so it's O(m)."""
 
-    # Get the elements of x
+    # Check that x is a numpy array
+    if type(x).__name__ != 'ndarray':
+        raise TypeError('x must be a numpy ndarray')
+
+    # Check that entries in a are real numbers (floats) and not ints
+    if x.dtype != 'float64' and x.dtype != 'float32':
+        raise TypeError('Entries in x must be real numbers (floats)')
+    
+    # Get the number of elements in x
     m = np.size(x)
 
     # Error checking
