@@ -9,7 +9,10 @@ def qr(A, alg='house'):
     and an orthogonal Q, which is explicitly computed by
     forward accumulation. This function is based on 
     Algorithm 5.2.1 (Householder QR) in Golub and Van Loan,
-    Matrix Computations."""
+    Matrix Computations. The algorithm that overwrites A with
+    upper triangular R takes 2*n^2*(m - n/3) flops. Additionally,
+    the algorithm to compute Q by accumulating Householder 
+    matrices takes 4*(m^2*n - m*m^2 + n^3/3) flops."""
 
     # Check that A is a numpy array
     if type(A).__name__ != 'ndarray':
