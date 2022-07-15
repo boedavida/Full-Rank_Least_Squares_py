@@ -1,4 +1,4 @@
-# qr.py
+# qr.py by David Boe
 
 import numpy as np
 from householder import house

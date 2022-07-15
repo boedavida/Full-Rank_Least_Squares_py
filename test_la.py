@@ -1,4 +1,4 @@
-# test_la.py
+# test_la.py by David Boe
 
 import pytest
 import numpy as np
