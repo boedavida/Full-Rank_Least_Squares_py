@@ -7,7 +7,9 @@ def qr(A, alg='house'):
     """QR decomposition of m x n matrix A, with m >= n
     This function explicitly outputs an upper triangular R
     and an orthogonal Q, which is explicitly computed by
-    forward accumulation."""
+    forward accumulation. This function is based on 
+    Algorithm 5.2.1 (Householder QR) in Golub and Van Loan,
+    Matrix Computations."""
 
     # Check that A is a numpy array
     if type(A).__name__ != 'ndarray':
@@ -88,3 +90,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
