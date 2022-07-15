@@ -5,11 +5,9 @@ from householder import house
 
 def qr(A, alg='house'):
     """QR decomposition of m x n matrix A, with m >= n
-    This function explicitly outputs an orthogonal Q 
-    and an upper triangular R. This algorithm is based on a
-    more efficient algorithm that returns the Householder 
-    vectors in the lower triangular components of R and 
-    takes 2*n^2*(m - n/3) flops"""
+    This function explicitly outputs an upper triangular R
+    and an orthogonal Q, which is explicitly computed by
+    forward accumulation."""
 
     # Check that A is a numpy array
     if type(A).__name__ != 'ndarray':
@@ -38,17 +36,14 @@ def qr(A, alg='house'):
             I = np.eye(np.size(v))
             R[j:m,j:n] = (I - b*np.outer(v,v)) @ R[j:m,j:n] # @ is shorthand for np.matmul()
             
-            if j < m:
-                # Store the components of the Householder vectors in the lower triangule part of R
-                # R[j+1:m,j] = v[1:(m-1-j+1)] 
-                # Overwrite lower triangular components with zeros 
-                R[j+1:m,j] = np.zeros(m-j-1, dtype=float) 
+            # For efficient storage, store the components of the Householder vectors in the lower triangule part of R
+            #if j < m:
+            #    R[j+1:m,j] = v[1:(m-1-j+1)] 
 
             # Forward accumulation of Q: Multiply Householder matrices to get Q = H1*H2*H3* ... Hn
             vj = np.zeros(m)
             vj[j:m] = v
-            H = (np.eye(m) - b*np.outer(vj,vj))
-            Q = Q @ H
+            Q = Q @ (np.eye(m) - b*np.outer(vj,vj))
         return Q, R
             
     elif alg == 'givens':
@@ -78,17 +73,17 @@ def main():
     
     # Test of orthogonality of Q
     if np.allclose( Q @ np.transpose(Q), np.eye(m), rtol=np.finfo(float).eps):
-        print(f"Orthogonality of Q: PASSED")
+        print(f"Orthogonality of Q test: PASSED")
     else:
-        print(f"Orthogonality of Q: FAILED")
+        print(f"Orthogonality of Q test: FAILED")
     
     # Test of upper triangularity of R
     for p in range(0,n):
         if np.allclose(R[p+1:m,p], 0, rtol=np.finfo(float).eps) == False:
-            print(f"Upper triangularity of R: FAILED\n")
+            print(f"Upper triangularity of R test: FAILED\n")
             break
     else:
-        print(f"Upper triangularity of R: PASSED\n")
+        print(f"Upper triangularity of R test: PASSED\n")
 
 
 if __name__ == "__main__":
