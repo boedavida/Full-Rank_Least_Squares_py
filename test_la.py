@@ -71,9 +71,10 @@ def test_qr_R_upper(A):
     sh = np.shape(A)
     m = sh[0]
     n = sh[1]
-    rslt = True
     for p in range(0,n):
         if np.allclose(R[p+1:m,p], 0, rtol=np.finfo(float).eps) == False:
             rslt = False
             break
+    else:
+        rslt = True
     assert rslt == True
