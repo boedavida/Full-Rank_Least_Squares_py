@@ -5,14 +5,12 @@ from householder import house
 
 def qr(A, alg='house'):
     """QR decomposition of m x n matrix A, with m >= n
-    This function explicitly outputs an upper triangular R
-    and an orthogonal Q, which is explicitly computed by
-    forward accumulation. This function is based on 
-    Algorithm 5.2.1 (Householder QR) in Golub and Van Loan,
-    Matrix Computations. The algorithm that overwrites A with
-    upper triangular R takes 2*n^2*(m - n/3) flops. Additionally,
-    the algorithm to compute Q by accumulating Householder 
-    matrices takes 4*(m^2*n - m*m^2 + n^3/3) flops."""
+    This function is an implimentation of Algorithm 5.2.1 
+    (Householder QR) in Golub and Van Loan, Matrix 
+    Computations. The algorithm that overwrites A with
+    upper triangular R takes 2*n^2*(m - n/3) flops and
+    storesHhouseholder vectors in the lower triangular
+    components. This algorithm takes 2*n^2*(m - n/3) flops."""
 
     # Check that A is a numpy array
     if type(A).__name__ != 'ndarray':
@@ -27,29 +25,22 @@ def qr(A, alg='house'):
 
     # Error checking
     if np.size(A) == 0:
-        raise ValueError('A is empty')
+        return np.array([])
     if sh[0] < sh[1]:
         raise ValueError('A must have at least as many rows as columns')
     
     if alg == 'house':
         m = sh[0]
         n = sh[1]
-        R = np.copy(A)
-        Q = np.eye(m)
+        QR = np.copy(A)
         for j in range(0,n):
-            v, b = house(R[j:m,j])
+            v, b = house(QR[j:m,j])
             I = np.eye(np.size(v))
-            R[j:m,j:n] = (I - b*np.outer(v,v)) @ R[j:m,j:n] # @ is shorthand for np.matmul()
-            
-            # For efficient storage, store the components of the Householder vectors in the lower triangule part of R
-            #if j < m:
-            #    R[j+1:m,j] = v[1:(m-1-j+1)] 
-
-            # Forward accumulation of Q: Multiply Householder matrices to get Q = H1*H2*H3* ... Hn
-            vj = np.zeros(m)
-            vj[j:m] = v
-            Q = Q @ (np.eye(m) - b*np.outer(vj,vj))
-        return Q, R
+            QR[j:m,j:n] = (I - b*np.outer(v,v)) @ QR[j:m,j:n] # @ is shorthand for np.matmul()
+            # Store the components of the Householder vectors in the lower triangular part of R
+            if j < m:
+                QR[j+1:m,j] = v[1:(m-1-j+1)] 
+        return QR
             
     elif alg == 'givens':
         raise ValueError('alg either not specified correctly or not supported')
@@ -64,8 +55,24 @@ def main():
     mn = 0.0
     std = 3.0
     A = np.random.normal(loc=mn, scale=std, size=(m,n))
-    Q, R = qr(A, alg='house')
+
+    # QR decomposition of A
+    QR = qr(A, alg='house')
+
+    # Forward accumulation of Q: Multiply Householder matrices to get Q = H1*H2*H3* ... Hn
+    # Takes 4*(m^2*n - m*n^2 + n^3/3) to accumulate Householder vectors
+    Q = np.eye(m)
+    for j in range(0,n):
+        b = 2./(1. + np.linalg.norm(QR[j+1:m,j],ord=2)**2)
+        vj = np.zeros(m)
+        vj[j:m] = np.hstack((np.array(1.),QR[j+1:m,j]))
+        Q = Q @ (np.eye(m) - b*np.outer(vj,vj))
     
+    # Form R, upper triangular for verification 
+    R = np.copy(QR)
+    for j in range(0,n):
+        R[j+1:m,j] = np.zeros(m-j-1)
+
     print(f"\nA = \n{A}")
     print(f"\nQ = \n{Q}")
     print(f"\nR = \n{R}")
@@ -83,12 +90,12 @@ def main():
         print(f"Orthogonality of Q test: FAILED")
     
     # Test of upper triangularity of R
-    for p in range(0,n):
-        if np.allclose(R[p+1:m,p], 0, rtol=np.finfo(float).eps) == False:
-            print(f"Upper triangularity of R test: FAILED\n")
-            break
-    else:
-        print(f"Upper triangularity of R test: PASSED\n")
+    #for p in range(0,n):
+    #    if np.allclose(R[p+1:m,p], 0, rtol=np.finfo(float).eps) == False:
+    #        print(f"Upper triangularity of R test: FAILED\n")
+    #        break
+    #else:
+    #    print(f"Upper triangularity of R test: PASSED\n")
 
 
 if __name__ == "__main__":

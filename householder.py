@@ -23,12 +23,12 @@ def house(x):
 
     # Error checking
     if m == 0:
-        raise ValueError('x is empty')
+        return np.array([])
     if np.ndim(x) > 1:
         raise ValueError('x must be a vector')
     
     sigma = np.dot(x[1:m],x[1:m])
-    v = np.hstack((np.array(1),x[1:m]))
+    v = np.hstack((np.array(1.),x[1:m]))
     if np.allclose(sigma, 0, atol=1e-16) and x[0] >= 0:
         beta = 0
     elif np.allclose(sigma, 0, atol=1e-16) and x[0] < 0:
