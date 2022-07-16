@@ -2,7 +2,6 @@
 """Solution of full-rank least squares problem by
 QR factorization"""
 
-from cmath import nan
 import numpy as np
 from householder import house
 from qr import qr
