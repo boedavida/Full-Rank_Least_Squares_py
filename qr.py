@@ -3,7 +3,7 @@
 import numpy as np
 from householder import house
 
-def qr(A, alg='house'):
+def qr(A: np.array(float), alg='house') -> np.array(float):
     """QR decomposition of m x n matrix A, with m >= n
     This function is an implimentation of Algorithm 5.2.1 
     (Householder QR) in Golub and Van Loan, Matrix 
@@ -17,7 +17,7 @@ def qr(A, alg='house'):
         raise TypeError('A must be a numpy ndarray')
 
     # Check that entries in A are real numbers (floats) and not ints
-    if A.dtype != 'float64' and A.dtype != 'float32':
+    if A.dtype != np.float64 and A.dtype != np.float32:
         raise TypeError('Entries in A must be real numbers (floats)')
 
     # Get the shape of A

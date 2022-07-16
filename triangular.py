@@ -2,7 +2,7 @@
 
 import numpy as np
 
-def backsubstitution(U, b):
+def backsubstitution(U: np.array(float), b:np.array(float)) -> np.array(float):
     """Solves the linear system Ux = b for upper
     triangular n x n matrix U by back susbstitution.
     Algorithm 3.1.2 in Golub and Van Loan, Matrix

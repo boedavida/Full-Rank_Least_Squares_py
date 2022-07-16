@@ -2,7 +2,7 @@
 
 import numpy as np
 
-def house(x):
+def house(x: np.array(float)) -> tuple[np.array(float), float]:
     """ This function computes the Householder vector based on 
     Algorithm 5.1.1 in Golub and Van Loan, Matrix Comptutations.
     Given x is an element of R^m, this function computes v, an element of R^m,

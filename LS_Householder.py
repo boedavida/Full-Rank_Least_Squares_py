@@ -7,7 +7,7 @@ from householder import house
 from qr import qr
 from triangular import backsubstitution
 
-def LS_Householder(A, b):
+def LS_Householder(A:np.array(float), b: np.array(float)) -> np.array(float):
     """Householder least squares solution for the
     full rank least squares problem for Ax = b with 
     m x n matrix A, m >= n, rank(A) = n, and m-vector b"""
