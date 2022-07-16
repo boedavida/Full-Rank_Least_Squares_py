@@ -21,7 +21,7 @@ def LS_Householder(A, b):
         v = np.hstack((np.array(1.),R[j+1:m,j]))
         beta = 2./(np.dot(v,v))
         b[j:m] = b[j:m] - beta*np.dot(v,b[j:m])*v
-    # Solve R[0:n, 0:n] * x_LS = b[0:n] by back subsitution
+    # Solve R[0:n, 0:n] * x_LS = b[0:n] by back substitution
     x = backsubstitution(R[0:n, 0:n], b[0:n])
     return x
 

@@ -5,6 +5,8 @@ import numpy as np
 from householder import house
 from qr import qr
 from LS_Householder import LS_Householder
+#import conftest
+#from conftest import fixture_qr_test_case
 
 # Make test cases for test_house
 @pytest.mark.parametrize(
@@ -32,16 +34,18 @@ def test_house(x):
     # Evaluation
     assert np.allclose(np.matmul(P,x), np.linalg.norm(x)*e1, rtol=np.finfo(float).eps) == True
 
-# Make test cases for test_qr_*
+# Get test cases for test_qr_*
 @pytest.mark.parametrize(
     "A",
-    [   (np.random.normal(loc=0.0, scale=5.0, size=(4,3))),
-        (np.random.normal(loc=0.0, scale=5.0, size=(12,10))),
-        (np.random.normal(loc=0.0, scale=5.0, size=(9,7)))
-    ]
+    [   
+        ("qr_test_case_1"),
+        ("qr_test_case_2"),
+        ("qr_test_case_3"),
+    ],
 )
-def test_qr_AQR(A):
+def test_qr_AQR(A, request):
     """Test of A = Q @ R"""
+    A = request.getfixturevalue(A)
     sh = np.shape(A)
     m = sh[0]
     n = sh[1]
@@ -60,15 +64,18 @@ def test_qr_AQR(A):
     # Unit test
     assert np.allclose(A, Q @ R, rtol=np.finfo(float).eps) == True
 
+# Get test cases for test_qr_*
 @pytest.mark.parametrize(
     "A",
-    [   (np.random.normal(loc=0.0, scale=5.0, size=(4,3))),
-        (np.random.normal(loc=0.0, scale=5.0, size=(12,10))),
-        (np.random.normal(loc=0.0, scale=5.0, size=(9,7)))
-    ]
+    [   
+        ("qr_test_case_1"),
+        ("qr_test_case_2"),
+        ("qr_test_case_3"),
+    ],
 )
-def test_qr_Q_orth(A):
+def test_qr_Q_orth(A, request):
     """Test of orthogonality of Q"""
+    A = request.getfixturevalue(A)
     QR = qr(A, alg='house')
     sh = np.shape(A)
     m = sh[0]
@@ -82,14 +89,17 @@ def test_qr_Q_orth(A):
         Q = Q @ (np.eye(m) - b*np.outer(vj,vj))
     assert np.allclose(Q @ np.transpose(Q), np.eye(m), rtol=np.finfo(float).eps) == True
 
+# Get test cases for test_qr_*
 @pytest.mark.parametrize(
     "A",
-    [   (np.random.normal(loc=0.0, scale=5.0, size=(4,3))),
-        (np.random.normal(loc=0.0, scale=5.0, size=(12,10))),
-        (np.random.normal(loc=0.0, scale=5.0, size=(9,7)))
-    ]
+    [   
+        ("qr_test_case_1"),
+        ("qr_test_case_2"),
+        ("qr_test_case_3"),
+    ],
 )
-def test_LS_Householder_1(A):
+def test_LS_Householder_1(A, request):
+    A = request.getfixturevalue(A)
     sh = np.shape(A)
     m = sh[0]
     n = sh[1]
@@ -99,15 +109,18 @@ def test_LS_Householder_1(A):
     # Unit test
     assert np.allclose( x_LS, x, rtol=np.finfo(float).eps) == True
 
+# Get test cases for test_qr_*
 @pytest.mark.parametrize(
     "A",
-    [   (np.random.normal(loc=0.0, scale=5.0, size=(4,3))),
-        (np.random.normal(loc=0.0, scale=5.0, size=(12,10))),
-        (np.random.normal(loc=0.0, scale=5.0, size=(9,7)))
-    ]
+    [   
+        ("qr_test_case_1"),
+        ("qr_test_case_2"),
+        ("qr_test_case_3"),
+    ],
 )
-def test_LS_Householder_2(A):
+def test_LS_Householder_2(A, request):
     """Test LS_Householder against numpy.linalg.lstsq"""
+    A = request.getfixturevalue(A)
     sh = np.shape(A)
     m = sh[0]
     n = sh[1]
