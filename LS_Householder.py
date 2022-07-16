@@ -42,13 +42,13 @@ def main():
     x_LS_np, res, rnk, s = np.linalg.lstsq(A, b, rcond=None)
     x_LS = LS_Householder(A, b)
 
-    # Unit test
+    # Unit test #1 compares the computed result with truth
     if np.allclose( x_LS, x, rtol=np.finfo(float).eps):
         print(f"\nLeast Squares householder test #1: PASSED")
     else:
         print(f"\nLeast Squares householder test #1: FAILED")
     
-    # Unit test
+    # Unit test #2 compares the computed result with the result from numpy.linalg.lstsq()
     if np.allclose( x_LS, x_LS_np, rtol=np.finfo(float).eps):
         print(f"Least Squares householder test #2: PASSED\n")
     else:

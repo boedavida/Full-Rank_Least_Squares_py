@@ -4,13 +4,13 @@ import numpy as np
 
 def backsubstitution(U, b):
     """Solves the linear system Ux = b for upper
-    triangular n x n matrix U by back susbstitution
+    triangular n x n matrix U by back susbstitution.
     Algorithm 3.1.2 in Golub and Van Loan, Matrix
     Computations. Upper triangularity of U is assumed
     but not enforced as this state is required for 
     working with QR and LS_Householder algorithms in
     the QR least squares problem. Lower triangular 
-    components are not used in this algorithm."""
+    components are ignored in this algorithm."""
 
     # Error checking
     # Check that A is a numpy array

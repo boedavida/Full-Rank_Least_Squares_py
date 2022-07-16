@@ -89,14 +89,6 @@ def main():
     else:
         print(f"Orthogonality of Q test: FAILED")
     
-    # Test of upper triangularity of R
-    #for p in range(0,n):
-    #    if np.allclose(R[p+1:m,p], 0, rtol=np.finfo(float).eps) == False:
-    #        print(f"Upper triangularity of R test: FAILED\n")
-    #        break
-    #else:
-    #    print(f"Upper triangularity of R test: PASSED\n")
-
 
 if __name__ == "__main__":
     main()
